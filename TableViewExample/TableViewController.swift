@@ -11,21 +11,31 @@ import UIKit
 class TableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var staticLabel: UILabel!
+    @IBOutlet weak var selectionLabel: UILabel!
+    @IBOutlet weak var emptyTableView: UIView!
    
 
-    var tableData = ["Annika", "Raphael", "Tobias"]
+    var tableData = [(Int)]()
         
     override func viewDidLoad() {
         super.viewDidLoad()
 
+
+
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.tableFooterView = UIView()
+        tableView.register(UINib(nibName: "TaskCell", bundle: nil), forCellReuseIdentifier: "cell")
+        tableView.register(UINib(nibName: "EmptyTableView", bundle: nil), forCellReuseIdentifier: "emptyTableView")
+        tableView.backgroundColor = UIColor.blue
+        
 
         self.title = "MyWork"
 
         navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 165/255, blue: 0, alpha: 1)
 
-
+        setBackgroundView()
     }
 
     override func didReceiveMemoryWarning() {
@@ -43,11 +53,23 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "cell")
-        cell.textLabel?.text = tableData[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TaskCell
+        cell.titleLabel?.text = "Task: "
+        cell.contentLabel?.text = "lalala"
+
         return cell
     }
 
+    @objc
+    private func setBackgroundView() {
+        //if tableData.isEmpty {
+            tableView.backgroundView = emptyTableView
+
+        //} else {
+          //  tableView.backgroundView = nil
+
+        //}
+    }
 
     /*
     // Override to support conditional editing of the table view.
